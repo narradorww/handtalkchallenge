@@ -1,0 +1,7 @@
+node_modules
+.expo
+.expo-shared
+babel.config.js
+storybook/storyLoader.js
+_templates
+setupJest.js
