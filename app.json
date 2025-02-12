@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-suite-senior",
-    "slug": "expo-suite-senior",
+    "name": "handtalkchallenge",
+    "slug": "handtalkchallenge",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
