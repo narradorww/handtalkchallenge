@@ -9,13 +9,14 @@
       "@navigation/*": ["src/navigation/*"],
       "@screens/*": ["src/screens/*"],
       "@theme/*": ["src/theme/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "three": ["./node_modules/three"]
     },
-    "typeRoots": ["node_modules/@types"],
-    "types": ["react-native", "jest"],
+    "typeRoots": ["node_modules/@types", "./src/@types"],
+    "types": ["react-native", "react-three-fiber", "jest"],
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleResolution": "node"
   },
-  "include": ["src", "src/@types"]
+  "include": ["src", "src/@types", "src/**/*"]
 }
