@@ -16,15 +16,17 @@
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
     "jest/prefer-to-have-length": "warn",
+    "@typescript-eslint/no-empty-object-type": "off",
     "jest/valid-expect": "error",
     "react/prop-types": "off",
     "@typescript-eslint/no-var-requires": "off",
     "import/no-unresolved": "error",
+    "react/no-unknown-property": "off",
     "import/order": [
       "error",
       {
         "alphabetize": { "order": "asc" },
-        "newlines-between": "always",
+        "newlines-between": "never",
         "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"]],
         "pathGroups": [
           {
