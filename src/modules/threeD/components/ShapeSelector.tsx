@@ -48,7 +48,11 @@ const ShapeSelector: React.FC = () => {
           {shapes.map(({ label, value }) => (
             <TouchableOpacity
               key={value}
-              onPress={() => updateShape(value)}
+              onPress={() => {
+                if (value === 'cube' || value === 'dodecahedron' || value === 'cone') {
+                  updateShape(value)
+                }
+              }}
               style={[styles.button, shape === value && styles.buttonActive]}
               accessible={true}
               accessibilityLabel={`Selecionar ${label}`}

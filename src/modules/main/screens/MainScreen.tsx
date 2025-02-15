@@ -36,7 +36,6 @@ const MainScreen: React.FC = () => {
             <CanvasWrapper
               style={styles.canvasContainer}
               sceneDescription={`Cena 3D contendo um ${shape} na cor ${color}`}
-              accessibilityLabel="Área de visualização 3D"
             >
               <ThreeDShapes
                 shape={shape}
