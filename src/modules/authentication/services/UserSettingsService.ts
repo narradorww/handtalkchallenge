@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { getDatabase, ref, set, get, child } from 'firebase/database'
 import { auth } from '../../../services/firebaseConfig'
 
@@ -20,11 +21,9 @@ class UserSettingsService {
     }
 
     try {
-      console.log('📡 [Salvando Configurações] Caminho:', `users/${user.uid}/settings`)
       await set(ref(db, `users/${user.uid}/settings`), settings)
-      console.log('✅ [Sucesso] Configurações salvas!')
     } catch (error) {
-      console.error('❌ [Erro ao salvar configurações]', error)
+      throw new Error('Falha ao salvar configurações do usuário: ' + error)
     }
   }
 
@@ -36,18 +35,15 @@ class UserSettingsService {
     }
 
     try {
-      console.log('📡 [Carregando Configurações] Caminho:', `users/${user.uid}/settings`)
       const snapshot = await get(child(ref(db), `users/${user.uid}/settings`))
 
       if (snapshot.exists()) {
-        console.log('✅ [Sucesso] Configurações carregadas:', snapshot.val())
         return snapshot.val() as UserSettings
       } else {
-        console.warn('⚠️ [Aviso] Nenhuma configuração encontrada.')
         return null
       }
-    } catch (error) {
-      console.error('❌ [Erro ao carregar configurações]', error)
+    } catch (error: unknown) {
+      console.error('❌ Erro ao carregar configurações do usuário:', error)
       return null
     }
   }
