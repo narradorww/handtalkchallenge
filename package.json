@@ -47,7 +47,7 @@
     "@react-navigation/native-stack": "^6.6.2",
     "@react-navigation/stack": "^7.1.1",
     "@react-three/drei": "^9.121.4",
-    "@react-three/fiber": "^8.17.14",
+    "@react-three/fiber": "8.16.8",
     "axios": "^0.27.2",
     "expo": "^52.0.32",
     "expo-asset": "~11.0.3",
