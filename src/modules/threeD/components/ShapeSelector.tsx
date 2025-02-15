@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Slider from '@react-native-community/slider'
 import { View, TouchableOpacity, Text, StyleSheet, AccessibilityInfo } from 'react-native'
 import RGBColorPicker from './RGBColorPicker'
 import RotationSliderGroup from './RotationSliderGroup'
+import UserSettingsService from '../../authentication/services/UserSettingsService'
 import { useShapeController } from '../controllers/ShapeController'
 
 const ShapeSelector: React.FC = () => {
@@ -19,9 +20,37 @@ const ShapeSelector: React.FC = () => {
     updateSize,
   } = useShapeController()
 
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     AccessibilityInfo.announceForAccessibility(`Forma selecionada: ${shape}`)
+    loadShapeSettings()
   }, [shape])
+
+  // 🔥 Carregar as configurações da forma ao trocar de forma
+  const loadShapeSettings = async () => {
+    setLoading(true)
+    const settings = await UserSettingsService.loadShapeSettings(shape)
+    if (settings) {
+      updateColor(settings.color)
+      updateRotation(settings.rotation)
+      updateSize(settings.size)
+      updateBackgroundColor(settings.backgroundColor)
+    }
+    setLoading(false)
+  }
+
+  // 🔥 Salvar automaticamente quando o usuário altera alguma configuração
+  useEffect(() => {
+    if (!loading) {
+      UserSettingsService.saveShapeSettings(shape, {
+        color,
+        rotation,
+        size,
+        backgroundColor,
+      })
+    }
+  }, [color, backgroundColor, rotation, size])
 
   return (
     <View style={styles.container}>
@@ -49,7 +78,6 @@ const ShapeSelector: React.FC = () => {
       </View>
 
       <RGBColorPicker label="Cor do Objeto" value={color} onChange={updateColor} />
-
       <RGBColorPicker
         label="Cor do Fundo"
         value={backgroundColor}
