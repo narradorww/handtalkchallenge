@@ -4,8 +4,7 @@ import { auth } from '../../../services/firebaseConfig'
 
 const db = getDatabase()
 
-interface UserSettings {
-  shape: 'cube' | 'dodecahedron' | 'cone'
+interface ShapeSettings {
   color: string
   rotation: [number, number, number]
   size: number
@@ -13,37 +12,42 @@ interface UserSettings {
 }
 
 class UserSettingsService {
-  async saveUserSettings(settings: UserSettings): Promise<void> {
+  async saveShapeSettings(
+    shape: 'cube' | 'dodecahedron' | 'cone',
+    settings: ShapeSettings,
+  ): Promise<void> {
     const user = auth.currentUser
     if (!user) {
-      console.error('❌ Nenhum usuário autenticado.')
       return
     }
 
     try {
-      await set(ref(db, `users/${user.uid}/settings`), settings)
+      const path = `users/${user.uid}/settings/${shape}`
+
+      await set(ref(db, path), settings)
     } catch (error) {
-      throw new Error('Falha ao salvar configurações do usuário: ' + error)
+      console.error('❌ [Erro ao salvar configuração]', error)
     }
   }
 
-  async loadUserSettings(): Promise<UserSettings | null> {
+  async loadShapeSettings(shape: 'cube' | 'dodecahedron' | 'cone'): Promise<ShapeSettings | null> {
     const user = auth.currentUser
     if (!user) {
-      console.error('❌ Nenhum usuário autenticado.')
       return null
     }
 
     try {
-      const snapshot = await get(child(ref(db), `users/${user.uid}/settings`))
+      const path = `users/${user.uid}/settings/${shape}`
+
+      const snapshot = await get(child(ref(db), path))
 
       if (snapshot.exists()) {
-        return snapshot.val() as UserSettings
+        return snapshot.val() as ShapeSettings
       } else {
         return null
       }
-    } catch (error: unknown) {
-      console.error('❌ Erro ao carregar configurações do usuário:', error)
+    } catch (erro) {
+      console.error('❌ [Erro ao carregar configuração]', erro)
       return null
     }
   }

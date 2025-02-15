@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
-import { auth } from '../../../services/firebaseConfig'
+import React, { createContext, useContext, useState, useEffect } from 'react'
 import UserSettingsService from '../../authentication/services/UserSettingsService'
 
 interface ShapeState {
@@ -27,38 +26,19 @@ export const ShapeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [size, setSize] = useState<number>(0.5)
   const [backgroundColor, setBackgroundColor] = useState<string>('#ffffff')
 
+  // 🔥 Sempre que a forma mudar, carregar as configurações do Firebase
   useEffect(() => {
-    const saveSettings = async () => {
-      if (auth.currentUser) {
-        await UserSettingsService.saveUserSettings({
-          shape,
-          color,
-          rotation,
-          size,
-          backgroundColor,
-        })
+    async function loadSettings() {
+      const settings = await UserSettingsService.loadShapeSettings(shape)
+      if (settings) {
+        setColor(settings.color)
+        setRotation(settings.rotation)
+        setSize(settings.size)
+        setBackgroundColor(settings.backgroundColor)
       }
     }
-
-    saveSettings()
-  }, [shape, color, rotation, size, backgroundColor])
-
-  useEffect(() => {
-    const loadSettings = async () => {
-      if (auth.currentUser) {
-        const savedSettings = await UserSettingsService.loadUserSettings()
-        if (savedSettings) {
-          setShape(savedSettings.shape)
-          setColor(savedSettings.color)
-          setRotation(savedSettings.rotation)
-          setSize(savedSettings.size)
-          setBackgroundColor(savedSettings.backgroundColor)
-        }
-      }
-    }
-
     loadSettings()
-  }, [auth.currentUser])
+  }, [shape])
 
   return (
     <ShapeContext.Provider

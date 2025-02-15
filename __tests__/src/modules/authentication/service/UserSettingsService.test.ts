@@ -14,13 +14,14 @@ jest.mock('firebase/database', () => ({
 
 jest.mock('firebase/auth', () => ({
   getAuth: jest.fn(() => ({
-    currentUser: { uid: 'testUser123' }, // 🔥 Mock corrigido
+    currentUser: { uid: 'testUser123' },
   })),
 }))
 
 describe('UserSettingsService', () => {
+  const testShape = 'cube'
   const testSettings: UserSettings = {
-    shape: 'cube', // 🔥 Valor fixo, evitando erro de tipagem
+    shape: testShape,
     color: '#FF0000',
     rotation: [0.1, 0.1, 0.1],
     size: 1,
@@ -31,24 +32,24 @@ describe('UserSettingsService', () => {
     jest.clearAllMocks()
   })
 
-  it('deve salvar as configurações do usuário no Firebase', async () => {
-    const mockRef = ref(db, `users/testUser123/settings`)
+  it('deve salvar as configurações da forma no Firebase', async () => {
+    const mockRef = ref(db, `users/testUser123/settings/${testShape}`)
     ;(set as jest.Mock).mockResolvedValue(undefined)
 
-    await UserSettingsService.saveUserSettings(testSettings)
+    await UserSettingsService.saveShapeSettings(testShape, testSettings)
 
     expect(set).toHaveBeenCalledWith(mockRef, testSettings)
   })
 
-  it('deve recuperar as configurações do usuário do Firebase', async () => {
+  it('deve recuperar as configurações da forma do Firebase', async () => {
     ;(get as jest.Mock).mockResolvedValue({
       exists: () => true,
       val: () => testSettings,
     })
 
-    const loadedSettings = await UserSettingsService.loadUserSettings()
+    const loadedSettings = await UserSettingsService.loadShapeSettings(testShape)
 
-    expect(get).toHaveBeenCalledWith(child(ref(db), `users/testUser123/settings`))
+    expect(get).toHaveBeenCalledWith(child(ref(db), `users/testUser123/settings/${testShape}`))
     expect(loadedSettings).toEqual(testSettings)
   })
 })
