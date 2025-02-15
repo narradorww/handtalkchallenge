@@ -1,39 +1,26 @@
 import React, { useEffect } from 'react'
 import Slider from '@react-native-community/slider'
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  TextInput,
-  StyleSheet,
-  AccessibilityInfo,
-} from 'react-native'
+import { View, TouchableOpacity, Text, StyleSheet, AccessibilityInfo } from 'react-native'
+import RGBColorPicker from './RGBColorPicker'
 import { useShapeController } from '../controllers/ShapeController'
 
 const ShapeSelector: React.FC = () => {
   const {
     shape,
     color,
+    backgroundColor,
     rotation,
     size,
-    backgroundColor,
     updateShape,
     updateColor,
+    updateBackgroundColor,
     updateRotation,
     updateSize,
-    updateBackgroundColor,
   } = useShapeController()
 
   useEffect(() => {
     AccessibilityInfo.announceForAccessibility(`Forma selecionada: ${shape}`)
   }, [shape])
-
-  // Lista de formas disponíveis
-  const shapes = [
-    { label: 'Cubo', value: 'cube' },
-    { label: 'Dodecaedro', value: 'dodecahedron' },
-    { label: 'Cone', value: 'cone' },
-  ]
 
   return (
     <View style={styles.container}>
@@ -41,59 +28,33 @@ const ShapeSelector: React.FC = () => {
         Configurações do Objeto 3D
       </Text>
 
-      {/* Seletor de Forma */}
       <View style={styles.section}>
         <Text style={styles.label}>Forma:</Text>
         <View style={styles.buttonContainer}>
-          {shapes.map(({ label, value }) => (
+          {['cube', 'dodecahedron', 'cone'].map((value) => (
             <TouchableOpacity
               key={value}
-              onPress={() => {
-                if (value === 'cube' || value === 'dodecahedron' || value === 'cone') {
-                  updateShape(value)
-                }
-              }}
+              onPress={() => updateShape(value as 'cube' | 'dodecahedron' | 'cone')}
               style={[styles.button, shape === value && styles.buttonActive]}
               accessible={true}
-              accessibilityLabel={`Selecionar ${label}`}
+              accessibilityLabel={`Selecionar ${value}`}
             >
-              <Text style={styles.buttonText}>{label}</Text>
+              <Text style={styles.buttonText}>
+                {value.charAt(0).toUpperCase() + value.slice(1)}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
       </View>
 
-      {/* Cor do Objeto */}
-      <View style={styles.section}>
-        <Text style={styles.label}>Cor do Objeto:</Text>
-        <TextInput
-          style={styles.input}
-          value={color}
-          onChangeText={updateColor}
-          placeholder="Digite um código HEX"
-          placeholderTextColor="#999"
-          accessible={true}
-          accessibilityLabel="Campo para definir a cor do objeto"
-          testID="color-input"
-        />
-      </View>
+      <RGBColorPicker label="Cor do Objeto" value={color} onChange={updateColor} />
 
-      {/* Cor do Fundo */}
-      <View style={styles.section}>
-        <Text style={styles.label}>Cor do Fundo:</Text>
-        <TextInput
-          style={styles.input}
-          value={backgroundColor}
-          onChangeText={updateBackgroundColor}
-          placeholder="Digite um código HEX"
-          placeholderTextColor="#999"
-          accessible={true}
-          accessibilityLabel="Campo para definir a cor do fundo"
-          testID="background-color-input"
-        />
-      </View>
+      <RGBColorPicker
+        label="Cor do Fundo"
+        value={backgroundColor}
+        onChange={updateBackgroundColor}
+      />
 
-      {/* Controle de Tamanho */}
       <View style={styles.section}>
         <Text style={styles.label}>Tamanho:</Text>
         <Slider
@@ -111,7 +72,6 @@ const ShapeSelector: React.FC = () => {
         />
       </View>
 
-      {/* Controle de Rotação */}
       <View style={styles.section}>
         <Text style={styles.label}>Rotação:</Text>
         <Slider
@@ -120,7 +80,7 @@ const ShapeSelector: React.FC = () => {
           maximumValue={0.5}
           step={0.01}
           value={rotation[0]}
-          onValueChange={(value: number) => updateRotation([value, rotation[1], rotation[2]])}
+          onValueChange={(value) => updateRotation([value, rotation[1], rotation[2]])}
           minimumTrackTintColor="#6200ee"
           maximumTrackTintColor="#ccc"
           thumbTintColor="#6200ee"
@@ -150,6 +110,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
+    fontWeight: 'bold',
     color: '#333',
     marginBottom: 10,
   },
@@ -165,8 +126,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 3, // Sombra no Android
-    shadowColor: '#000', // Sombra no iOS
+    elevation: 3,
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -176,16 +137,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 14,
-    color: '#333',
-  },
-  input: {
-    height: 50,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    backgroundColor: '#fff',
-    fontSize: 16,
     color: '#333',
   },
   slider: {
