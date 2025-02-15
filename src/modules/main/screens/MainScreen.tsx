@@ -6,7 +6,6 @@ import CanvasWrapper from '../../threeD/components/CanvasWrapper'
 import ShapeSelector from '../../threeD/components/ShapeSelector'
 import { useShapeController } from '../../threeD/controllers/ShapeController'
 
-// Paleta de cores acessível
 const colors = {
   background: '#F8F9FA',
   primary: '#2A2D34',

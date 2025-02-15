@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Slider from '@react-native-community/slider'
 import { View, TouchableOpacity, Text, StyleSheet, AccessibilityInfo } from 'react-native'
 import RGBColorPicker from './RGBColorPicker'
+import RotationSliderGroup from './RotationSliderGroup'
 import { useShapeController } from '../controllers/ShapeController'
 
 const ShapeSelector: React.FC = () => {
@@ -74,19 +75,7 @@ const ShapeSelector: React.FC = () => {
 
       <View style={styles.section}>
         <Text style={styles.label}>Rotação:</Text>
-        <Slider
-          style={styles.slider}
-          minimumValue={0.01}
-          maximumValue={0.5}
-          step={0.01}
-          value={rotation[0]}
-          onValueChange={(value) => updateRotation([value, rotation[1], rotation[2]])}
-          minimumTrackTintColor="#6200ee"
-          maximumTrackTintColor="#ccc"
-          thumbTintColor="#6200ee"
-          accessible={true}
-          accessibilityLabel="Controle de rotação"
-        />
+        <RotationSliderGroup rotation={rotation} onRotationChange={updateRotation} />
       </View>
     </View>
   )
@@ -115,13 +104,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: 10,
   },
+
   button: {
-    flex: 1,
-    margin: 5,
-    padding: 15,
+    width: '90%',
+    padding: 12,
     backgroundColor: '#fff',
     borderRadius: 10,
     alignItems: 'center',
