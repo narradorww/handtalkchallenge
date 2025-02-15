@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from '@testing-library/react-native'
-import Dodecahedron from '../../../../../../src/modules/threeD/components/3d/Dodecahedron'
 import { AccessibilityInfo } from 'react-native'
+import Dodecahedron from '../../../../../../src/modules/threeD/components/3d/Dodecahedron'
 
 // Mock mínimo necessário
 jest.mock('three', () => ({

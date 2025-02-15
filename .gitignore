@@ -36,3 +36,6 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+# Ignorar configurações privadas do Firebase
+src/services/firebaseConfig.ts

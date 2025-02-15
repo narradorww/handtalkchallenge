@@ -1,9 +1,8 @@
 import React from 'react'
 import { render } from '@testing-library/react-native'
-import Cube from '../../../../../../src/modules/threeD/components/3d/Cube'
 import { AccessibilityInfo } from 'react-native'
+import Cube from '../../../../../../src/modules/threeD/components/3d/Cube'
 
-// Mock mínimo necessário
 jest.mock('three', () => ({
   Mesh: jest.fn(),
   Color: jest.fn(),

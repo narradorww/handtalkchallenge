@@ -3,7 +3,6 @@ import { render } from '@testing-library/react-native'
 import { AccessibilityInfo } from 'react-native'
 import Cone from '../../../../../../src/modules/threeD/components/3d/Cone'
 
-// Mock mínimo necessário
 jest.mock('three', () => ({
   Mesh: jest.fn(),
   Color: jest.fn(),
