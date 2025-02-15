@@ -2,8 +2,17 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } f
 import AuthService from '../../../../../src/modules/authentication/services/AuthService'
 import { auth } from '../../../../../src/services/firebaseConfig'
 
+jest.mock('../../../../../src/services/firebaseConfig', () => ({
+  auth: {
+    currentUser: null,
+  },
+  db: {}, // Evita erro ao tentar acessar o banco de dados
+}))
+
 jest.mock('firebase/auth', () => ({
-  getAuth: jest.fn(() => ({})), // Mock do getAuth
+  getAuth: jest.fn(() => ({
+    currentUser: null,
+  })),
   signInWithEmailAndPassword: jest.fn(),
   createUserWithEmailAndPassword: jest.fn(),
   signOut: jest.fn(),

@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { auth } from '../../../services/firebaseConfig'
+import UserSettingsService from '../../authentication/services/UserSettingsService'
 
 interface ShapeState {
   shape: 'cube' | 'dodecahedron' | 'cone'
@@ -24,6 +26,39 @@ export const ShapeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [rotation, setRotation] = useState<[number, number, number]>([0.01, 0.01, 0.01])
   const [size, setSize] = useState<number>(0.5)
   const [backgroundColor, setBackgroundColor] = useState<string>('#ffffff')
+
+  useEffect(() => {
+    const saveSettings = async () => {
+      if (auth.currentUser) {
+        await UserSettingsService.saveUserSettings({
+          shape,
+          color,
+          rotation,
+          size,
+          backgroundColor,
+        })
+      }
+    }
+
+    saveSettings()
+  }, [shape, color, rotation, size, backgroundColor])
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      if (auth.currentUser) {
+        const savedSettings = await UserSettingsService.loadUserSettings()
+        if (savedSettings) {
+          setShape(savedSettings.shape)
+          setColor(savedSettings.color)
+          setRotation(savedSettings.rotation)
+          setSize(savedSettings.size)
+          setBackgroundColor(savedSettings.backgroundColor)
+        }
+      }
+    }
+
+    loadSettings()
+  }, [auth.currentUser])
 
   return (
     <ShapeContext.Provider
