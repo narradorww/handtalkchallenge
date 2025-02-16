@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react'
 import {
   View,
@@ -92,9 +93,9 @@ const LoginScreen: React.FC = () => {
         <Text style={styles.buttonText}>{loading ? 'Entrando...' : 'Entrar'}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleRegister} style={styles.registerButton} disabled={loading}>
+      {/* <TouchableOpacity onPress={handleRegister} style={styles.registerButton} disabled={loading}>
         <Text style={styles.registerText}>{loading ? 'Criando...' : 'Criar Conta'}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   )
 }

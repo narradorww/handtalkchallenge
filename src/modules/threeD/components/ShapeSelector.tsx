@@ -6,7 +6,11 @@ import RotationSliderGroup from './RotationSliderGroup'
 import UserSettingsService from '../../authentication/services/UserSettingsService'
 import { useShapeController } from '../controllers/ShapeController'
 
-const ShapeSelector: React.FC = () => {
+interface ShapeSelectorProps {
+  control?: boolean // 🔥 Se `false`, exibe apenas os botões de forma
+}
+
+const ShapeSelector: React.FC<ShapeSelectorProps> = ({ control = true }) => {
   const {
     shape,
     color,
@@ -58,6 +62,7 @@ const ShapeSelector: React.FC = () => {
         Configurações do Objeto 3D
       </Text>
 
+      {/* 🔥 Sempre exibir os botões de forma */}
       <View style={styles.section}>
         <Text style={styles.label}>Forma:</Text>
         <View style={styles.buttonContainer}>
@@ -77,34 +82,39 @@ const ShapeSelector: React.FC = () => {
         </View>
       </View>
 
-      <RGBColorPicker label="Cor do Objeto" value={color} onChange={updateColor} />
-      <RGBColorPicker
-        label="Cor do Fundo"
-        value={backgroundColor}
-        onChange={updateBackgroundColor}
-      />
+      {/* 🔥 Exibir controles apenas se `control` for `true` */}
+      {control === true && (
+        <>
+          <RGBColorPicker label="Cor do Objeto" value={color} onChange={updateColor} />
+          <RGBColorPicker
+            label="Cor do Fundo"
+            value={backgroundColor}
+            onChange={updateBackgroundColor}
+          />
 
-      <View style={styles.section}>
-        <Text style={styles.label}>Tamanho:</Text>
-        <Slider
-          style={styles.slider}
-          minimumValue={0.1}
-          maximumValue={2}
-          step={0.1}
-          value={size}
-          onValueChange={updateSize}
-          minimumTrackTintColor="#6200ee"
-          maximumTrackTintColor="#ccc"
-          thumbTintColor="#6200ee"
-          accessible={true}
-          accessibilityLabel="Controle de tamanho"
-        />
-      </View>
+          <View style={styles.section}>
+            <Text style={styles.label}>Tamanho:</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={0.1}
+              maximumValue={2}
+              step={0.1}
+              value={size}
+              onValueChange={updateSize}
+              minimumTrackTintColor="#6200ee"
+              maximumTrackTintColor="#ccc"
+              thumbTintColor="#6200ee"
+              accessible={true}
+              accessibilityLabel="Controle de tamanho"
+            />
+          </View>
 
-      <View style={styles.section}>
-        <Text style={styles.label}>Rotação:</Text>
-        <RotationSliderGroup rotation={rotation} onRotationChange={updateRotation} />
-      </View>
+          <View style={styles.section}>
+            <Text style={styles.label}>Rotação:</Text>
+            <RotationSliderGroup rotation={rotation} onRotationChange={updateRotation} />
+          </View>
+        </>
+      )}
     </View>
   )
 }
@@ -136,7 +146,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
   },
-
   button: {
     width: '90%',
     padding: 12,

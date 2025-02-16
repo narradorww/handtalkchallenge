@@ -15,7 +15,7 @@ const colors = {
   surface: '#FFFFFF',
 }
 
-const MainScreen: React.FC = () => {
+const ConfigScreen: React.FC = () => {
   const { logout } = useAuth()
   const { shape, color, rotation, size } = useShapeController()
 
@@ -47,7 +47,7 @@ const MainScreen: React.FC = () => {
           </View>
 
           <View style={styles.controlsContainer}>
-            <ShapeSelector control={false} />
+            <ShapeSelector />
           </View>
 
           <TouchableOpacity style={styles.logoutButton} onPress={logout}>
@@ -124,4 +124,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default MainScreen
+export default ConfigScreen
